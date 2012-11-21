@@ -15,7 +15,11 @@ module FakeRest
 
   class ProfileLoader
     @@options = {}
+    @@app = {}
 
+    def initialize(app)
+      @@app = app
+    end
     def load(profile_file, options)
       @@options = options
       request_mappings = []
@@ -51,7 +55,7 @@ module FakeRest
           erb request_mapping.response_file.to_sym, params
         }
 
-        send request_mapping.method, request_mapping.path, &block
+        @@app.send request_mapping.method, request_mapping.path, &block
       end
     end
 
